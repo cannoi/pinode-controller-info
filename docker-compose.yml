@@ -1,4 +1,6 @@
 services:
-  pinode-controller-info:
+  web:
     image: ghcr.io/cannoi/pinode-controller-info:latest
     restart: unless-stopped
+    ports:
+      - '127.0.0.1:8080:8080'

@@ -1,9 +1,16 @@
 # Pi Node Telegram Controller PRO — SoloHost Info
 
-Windows Edition is ready. SoloHost Edition is coming soon.
+## 🪟 Windows — Đã sẵn sàng
 
-Windows repository:
-https://github.com/cannoi/pinode-telegram-controller
+Phiên bản Windows đã hoàn thiện.
 
-Windows ZIP:
-https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip
+- GitHub: https://github.com/cannoi/pinode-telegram-controller
+- Tải ZIP: https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip
+
+## 🐳 SoloHost — Sắp ra mắt
+
+Phiên bản SoloHost hiện chưa phát hành chính thức và đang được tối ưu riêng cho môi trường SoloHost.
+
+## Docker image
+
+`ghcr.io/cannoi/pinode-controller-info:latest`
