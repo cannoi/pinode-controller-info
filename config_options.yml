@@ -1,0 +1,25 @@
+title: Pi Node Telegram Controller PRO
+
+description: >
+  Windows Edition đã sẵn sàng.
+  SoloHost Edition đang được phát triển và sẽ sớm ra mắt.
+  Mã nguồn:
+  https://github.com/cannoi/pinode-telegram-controller
+  Tải Windows:
+  https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip
+
+output_file: .env
+
+fixed_values:
+  - name: APP_NAME
+    value: pinode-controller-info
+  - name: TZ
+    value: Asia/Ho_Chi_Minh
+
+fields:
+  - name: APP_DISPLAY_NAME
+    label: Tên ứng dụng
+    type: text
+    required: true
+    default: Pi Node Telegram Controller PRO
+    help: Tên hiển thị của ứng dụng.

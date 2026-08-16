@@ -1,0 +1,4 @@
+services:
+  pinode-controller-info:
+    image: ghcr.io/cannoi/pinode-controller-info:latest
+    restart: unless-stopped
