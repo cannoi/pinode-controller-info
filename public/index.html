@@ -1,1 +1,95 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pi Node Telegram Controller PRO</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,Arial,Helvetica,sans-serif;color:#fff}
+body{background:#0d0f14 linear-gradient(160deg,#1a1030 0%,#0d0f14 45%,#0a1628 100%);position:relative}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(99,57,184,.25),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(22,138,69,.12),transparent 40%);z-index:0;pointer-events:none}
+main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:42px 18px 60px}
+.hero,.card{background:rgba(16,18,28,.82);border:1px solid rgba(255,255,255,.12);border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.4);backdrop-filter:blur(8px)}
+.hero{padding:28px;margin-bottom:18px}
+h1{margin:0 0 10px;font-size:clamp(26px,5vw,42px);letter-spacing:-.02em}
+.subtitle{font-size:16px;color:#c8c8d0;margin:0}
+.card{padding:24px;margin-top:18px}
+h2{margin:0 0 12px;font-size:22px}
+p{line-height:1.65;color:#e0e0e8;margin:0 0 12px}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px;margin-bottom:12px;letter-spacing:.02em}
+.ready{background:#168a45;color:#fff}.info{background:#4c3b9e;color:#fff}.live{background:#0e7490;color:#fff}
+a.button{display:inline-block;margin:6px 8px 0 0;padding:12px 16px;border-radius:12px;text-decoration:none;color:#fff;font-weight:700;background:#6339b8;border:1px solid rgba(255,255,255,.15);transition:filter .15s}
+a.button:hover{filter:brightness(1.12)}
+a.button.secondary{background:rgba(255,255,255,.08)}
+.note{padding:14px 16px;border-radius:12px;background:rgba(255,180,0,.1);border:1px solid rgba(255,180,0,.28);color:#ffe7a0;margin-top:8px}
+.live-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:14px}
+.stat{background:rgba(0,0,0,.35);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.08)}
+.stat .label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.04em}
+.stat .value{font-size:18px;font-weight:700;margin-top:4px;color:#a7f3d0}
+footer{margin-top:28px;text-align:center;color:#888;font-size:13px}
+footer a{color:#a78bfa;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <h1>🟢 Pi Node Telegram Controller PRO</h1>
+  <p class="subtitle">Trung tâm thông tin động cho phiên bản Windows &amp; SoloHost (Pi Network).</p>
+</section>
 
+<section class="card">
+  <span class="badge live">● LIVE · SoloHost Shell</span>
+  <h2>Trạng thái runtime</h2>
+  <div class="live-box" id="live">
+    <div class="stat"><div class="label">Version</div><div class="value" id="v">—</div></div>
+    <div class="stat"><div class="label">Uptime</div><div class="value" id="up">—</div></div>
+    <div class="stat"><div class="label">Memory</div><div class="value" id="mem">—</div></div>
+    <div class="stat"><div class="label">Node</div><div class="value" id="node">—</div></div>
+  </div>
+  <p style="margin-top:16px;font-size:14px;color:#aaa">
+    <a href="/status" style="color:#a78bfa">/status</a> ·
+    <a href="/api/status" style="color:#a78bfa">/api/status</a> ·
+    <a href="/health" style="color:#a78bfa">/health</a>
+  </p>
+</section>
+
+<section class="card">
+  <span class="badge ready">🪟 WINDOWS — ĐÃ SẴN SÀNG</span>
+  <h2>Phiên bản Windows hoàn chỉnh</h2>
+  <p>Ứng dụng giám sát &amp; điều khiển Pi Node qua Telegram trên Windows. Sẵn sàng dùng ngay.</p>
+  <a class="button" href="https://github.com/cannoi/pinode-telegram-controller" target="_blank" rel="noopener">📦 GitHub chính thức</a>
+  <a class="button secondary" href="https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip" target="_blank" rel="noopener">⬇️ Tải ZIP Windows</a>
+</section>
+
+<section class="card">
+  <span class="badge info">🐳 SOLOHOST / PI NETWORK</span>
+  <h2>Phiên bản SoloHost</h2>
+  <p>Shell thông tin động này chạy trên SoloHost (port 8080). Phiên bản controller đầy đủ đang được tối ưu riêng cho môi trường SoloHost.</p>
+  <p class="note">⚠️ <strong>Lưu ý:</strong> Hiện tại dùng bản Windows để vận hành Node. Shell SoloHost này chỉ cung cấp thông tin + health check.</p>
+</section>
+
+<footer>
+  Built for Pioneers · <span id="footer-v">v1.2.0</span> ·
+  <a href="https://github.com/cannoi/pinode-controller-info">pinode-controller-info</a>
+</footer>
+</main>
+<script>
+async function refresh() {
+  try {
+    const r = await fetch('/api/status', { cache: 'no-store' });
+    const d = await r.json();
+    document.getElementById('v').textContent = d.version || '—';
+    document.getElementById('up').textContent = d.uptime || '—';
+    document.getElementById('mem').textContent = (d.memory && d.memory.rssMB != null) ? d.memory.rssMB + ' MB' : '—';
+    document.getElementById('node').textContent = d.node || '—';
+    document.getElementById('footer-v').textContent = 'v' + (d.version || '1.2.0');
+  } catch (e) {
+    document.getElementById('up').textContent = 'offline';
+  }
+}
+refresh();
+setInterval(refresh, 15000);
+</script>
+</body>
+</html>
