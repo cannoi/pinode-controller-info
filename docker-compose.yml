@@ -1,15 +1,18 @@
 services:
-  pi-node-solohost:
-    build:
-      context: .
-    image: pi-node-solohost:1.1.0
-    container_name: pi-node-solohost
+  web:
+    image: ghcr.io/cannoi/pinode-controller-info:latest
+    build: .
     restart: unless-stopped
     ports:
+      # Local test: map host 8081 → container 8080
+      # SoloHost: let the platform publish its own port; do not bind 127.0.0.1 only
       - "8081:8080"
+    environment:
+      - PORT=8080
+      - HOST=0.0.0.0
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health"]
       interval: 30s
-      timeout: 3s
+      timeout: 5s
       retries: 3
       start_period: 5s

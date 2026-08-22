@@ -1,72 +1,71 @@
-# Pi Node Monitor — SoloHost Edition V1.1
+# Pi Node Telegram Controller PRO — SoloHost Info
 
-V1.1 is a diagnostic-focused revision of the lightweight SoloHost web shell.
+**Version 1.2.0** · Dynamic lightweight web shell for SoloHost / Pi Network
 
-## What changed from V1.0
+## 🪟 Windows — Đã sẵn sàng
 
-- Explicit `GET /` route serving `index.html`
-- Explicit `GET /index.html`
-- Added `GET /status`
-- Added `GET /api/status`
-- Added visible root/health/API diagnostics
-- Disabled caching for diagnostic responses
-- Kept container port at `8080`
-- Kept health check at `/health`
-- No framework, CDN, database, Docker socket, or host command execution
-- Slow 60-second polling only
+Phiên bản Windows đã hoàn thiện.
 
-## Endpoints
+- GitHub: https://github.com/cannoi/pinode-telegram-controller
+- Tải ZIP: https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip
 
-| Endpoint | Purpose |
-|---|---|
-| `/` | Main web UI |
-| `/index.html` | Main web UI direct path |
-| `/status` | Minimal SoloHost diagnostic page |
-| `/health` | Plain-text health check, HTTP 200 |
-| `/api/status` | Minimal JSON status |
+## 🐳 SoloHost — Shell thông tin động
 
-## Local test
+App này là **shell thông tin động** (Node.js thuần, không dependency ngoài) chạy trên SoloHost:
+
+| Endpoint     | Mục đích                          |
+|--------------|-----------------------------------|
+| `/`          | Trang UI chính (tiếng Việt)       |
+| `/health`    | Health check plain-text → `OK`    |
+| `/status`    | Trang diagnostic HTML             |
+| `/api/status`| JSON status (uptime, memory, …)   |
+
+- Lắng nghe `0.0.0.0:8080`
+- Không dùng Docker socket, không chạy lệnh host, không gọi API ngoài
+- Phù hợp SoloHost (nhẹ, healthcheck rõ ràng)
+
+### Docker image
 
 ```bash
-docker build -t pi-node-solohost:1.1.0 .
-docker run --rm -p 8081:8080 --name pi-node-solohost pi-node-solohost:1.1.0
+docker pull ghcr.io/cannoi/pinode-controller-info:latest
 ```
 
-Then test:
+Hoặc build local:
 
-```text
-http://localhost:8081/
-http://localhost:8081/status
-http://localhost:8081/health
-http://localhost:8081/api/status
+```bash
+docker build -t pinode-controller-info:1.2.0 .
+docker run --rm -p 8081:8080 --name pinode-info pinode-controller-info:1.2.0
+```
+
+Sau đó mở:
+
+- http://localhost:8081/
+- http://localhost:8081/health
+- http://localhost:8081/status
+- http://localhost:8081/api/status
+
+### Chạy không Docker
+
+```bash
+node server.js
+# → http://0.0.0.0:8080
 ```
 
 ## Important for SoloHost
 
-The image listens on `0.0.0.0:8080`. Do not replace this with `127.0.0.1`.
+- Container **phải** listen `0.0.0.0:8080` (không dùng `127.0.0.1`).
+- Mapping `8081:8080` trong `docker-compose.yml` chỉ để test local.
+- SoloHost sẽ tự publish port theo platform.
 
-The `8081:8080` mapping in `docker-compose.yml` is for local Windows testing. A SoloHost deployment should let the host/orchestrator publish its own host port.
+## Changelog
 
-V1.1 still does not access the Pi Node Docker socket. Pi Node integration should be added only after the SoloHost web proxy is confirmed to display `/` successfully.
+### v1.2.0
+- Chuyển từ nginx static → Node.js dynamic shell
+- Thêm `/api/status` (JSON realtime: uptime, memory, version)
+- Thêm `/status` (trang diagnostic)
+- UI cập nhật live stats mỗi 15s
+- Dockerfile + HEALTHCHECK sẵn sàng SoloHost
+- Zero npm dependencies (chỉ Node stdlib)
 
-## Debugging the blank page
-
-If SoloHost logs show repeated:
-
-```text
-GET /health 200
-```
-
-but never show:
-
-```text
-GET /
-```
-
-then the health checker is reaching the container while the UI/proxy path is not requesting the root page. Test `/status` as the simplest possible HTML route.
-
-If `/status` works but `/` does not, the issue is likely path/proxy handling rather than nginx health.
-
-## Security
-
-No Docker socket is mounted and no host commands are executed. Do not expose administrative Pi Node or Stellar Core HTTP interfaces publicly.
+### v1.1.0
+- Static nginx edition (legacy)

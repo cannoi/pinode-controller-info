@@ -1,0 +1,39 @@
+title: Pi Node Telegram Controller PRO
+description: |
+  🟢 PI NODE TELEGRAM CONTROLLER PRO
+
+  🪟 WINDOWS — ĐÃ SẴN SÀNG
+  Phiên bản Windows đã hoàn thiện và có thể sử dụng ngay.
+
+  🐳 SOLOHOST / PI NETWORK — SHELL ĐỘNG v1.2
+  Shell thông tin động (Node.js) cho SoloHost.
+  Endpoints: /  /health  /status  /api/status
+
+  ⚠️ LƯU Ý
+  Hiện tại dùng bản Windows để vận hành Node.
+  Shell SoloHost này cung cấp thông tin + health check.
+
+output_file: .env
+
+fixed_values:
+  - name: APP_NAME
+    value: pinode-controller-info
+  - name: TZ
+    value: Asia/Ho_Chi_Minh
+  - name: PORT
+    value: "8080"
+
+fields:
+  - name: WINDOWS_DOWNLOAD
+    label: "🪟 WINDOWS — LINK TẢI ỨNG DỤNG"
+    type: text
+    required: false
+    default: https://github.com/cannoi/pinode-telegram-controller/archive/refs/heads/main.zip
+    help: "Copy link này vào trình duyệt để tải phiên bản Windows."
+
+  - name: GITHUB_REPOSITORY
+    label: "📦 GITHUB — MÃ NGUỒN CHÍNH THỨC"
+    type: text
+    required: false
+    default: https://github.com/cannoi/pinode-telegram-controller
+    help: "Copy link này để xem mã nguồn, hướng dẫn và các phiên bản."
